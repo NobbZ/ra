@@ -1,4 +1,4 @@
-defmodule Anubis.RcFile do
+defmodule Ra.RcFile do
 
   def exist?(module), do: module |> filename |> File.exists?
 
@@ -26,22 +26,29 @@ defmodule Anubis.RcFile do
   defp parse(lines), do: _parse(lines, %{})
 
   defp _parse([], dict), do: dict
-  defp _parse([pair|tail], dict) do 
+  defp _parse([pair|tail], dict) do
     [key, value] = pair |> String.split(": ")
     _parse(tail, Dict.put(dict, String.to_atom(key), parse_value(value)))
   end
 
   defp parse_value("false"), do: false
   defp parse_value("true"), do: true
-  defp parse_value(number), do: parse_number(number)
-  defp parse_value(value), do: value
+  defp parse_value(value), do: try_parse(value)
 
-  defp parse_number(number), do: _parse_number(Integer.parse(number), number)
-  defp _parse_number(:error, num), do: num
-  defp _parse_number({num, ""}, _), do: num
-  defp _parse_number({_, _}, num) do
-    {value, _} = Float.parse(num)
-    value
+  defp try_parse(value), do: try_parse_as_integer(value) || try_parse_as_float(value) || value
+
+  defp try_parse_as_integer(candidate) do
+    case Integer.parse(candidate) do
+      {value, ""} -> value
+      _           -> nil
+    end
+  end
+
+  defp try_parse_as_float(candidate) do
+    case Float.parse(candidate) do
+      {value, ""} -> value
+      _           -> nil
+    end
   end
 
   def filename(module) do
@@ -52,7 +59,7 @@ defmodule Anubis.RcFile do
     |> _filename
     |> _path
   end
-  
+
   defp _filename(["elixir", "mix", "tasks"|filename]), do: ".#{filename |> Enum.join("_")}.rc"
   defp _filename(["elixir" | list]), do: ".#{list |> Enum.join("_")}.rc"
 

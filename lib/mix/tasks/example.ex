@@ -22,7 +22,7 @@ end
 
 defmodule Mix.Tasks.Example do
   use Mix.Task
-  use Anubis
+  use Ra
 
   banner "This is the banner"
 

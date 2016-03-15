@@ -13,7 +13,7 @@ defmodule ExampleModule do
 end
 
 defmodule TestHelperTask do
-  use Anubis
+  use Ra
 
   banner """
   This is the test helper
@@ -44,7 +44,7 @@ defmodule TestHelper do
     |> File.rm
   end
 
-  def datepart do 
+  def datepart do
     Chronos.today |> Chronos.Formatter.strftime("%Y-%0m-%0d")
   end
 

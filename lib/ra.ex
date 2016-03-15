@@ -1,4 +1,4 @@
-defmodule Anubis do
+defmodule Ra do
 
   defmacro banner(banner) do
     quote do
@@ -10,7 +10,7 @@ defmodule Anubis do
     quote do
       @commands @commands ++ [{ unquote(to_string name), unquote(description) }]
       def _command([unquote(to_string name)|args], opts) do
-        rc = Anubis.RcFile.load(__MODULE__)
+        rc = Ra.RcFile.load(__MODULE__)
         {args, opts, rc} |> unquote(f)
       end
     end
@@ -27,10 +27,10 @@ defmodule Anubis do
     quote do
       @commands @commands ++ [{ "initrc", "Initialize the runtime configuration file." }]
 
-      def init_rc, do: _init_rc(unquote(dict), Anubis.RcFile.exist?(__MODULE__))
+      def init_rc, do: _init_rc(unquote(dict), Ra.RcFile.exist?(__MODULE__))
 
       def _init_rc(_, true), do: nil
-      def _init_rc(d, _), do: Anubis.RcFile.touch(d, __MODULE__)
+      def _init_rc(d, _), do: Ra.RcFile.touch(d, __MODULE__)
 
       def _command(["initrc"|_], _), do: init_rc
     end

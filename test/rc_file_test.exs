@@ -1,10 +1,10 @@
 defmodule RcFileTest do
-  use ExUnit.Case
+  use PowerAssert
 
   setup do
     TestHelper.cleanup
     on_exit fn -> TestHelper.cleanup end
-  end  
+  end
 
   test "that rc file is created when it doesn't exist" do
     assert !File.exists?(TestHelper.path)
@@ -25,7 +25,7 @@ defmodule RcFileTest do
   test "rc file is loaded back with the correct types" do
     TestHelperTask.run(["initrc"])
 
-    loaded = Anubis.RcFile.load(TestHelperTask)
+    loaded = Ra.RcFile.load(TestHelperTask)
     "A" =  loaded.a
     false = loaded.b
     1 = loaded.c

@@ -1,14 +1,14 @@
-defmodule Anubis.Mixfile do
+defmodule Ra.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :anubis,
-     version: "0.3.0",
-     elixir: "~> 1.0.0",
+    [app: :ra,
+     version: "0.3.1",
+     elixir: "~> 1.0",
      package: package,
      docs: [readme: true, main: "README.md"],
      description: """
-      Anubis is a framework for building command line applications.
+      Ra is a framework for building command line applications.
      """,
      deps: deps]
   end
@@ -18,14 +18,18 @@ defmodule Anubis.Mixfile do
   end
 
   defp deps do
-    []
+    [{:power_assert, "~> 0.0.8", only: :test}]
   end
 
   defp package do
     %{
       licenses: ["MIT"],
-      contributors: ["Benny Hallett"],
-      links: %{ "Github" => "https://github.com/bennyhallett/anubis" }
+      maintainers: ["Norbert Melzer"],
+      contributors: ["Benny Hallett", "Norbert Melzer"],
+      links: %{
+        "Github" => "https://github.com/NobbZ/ra",
+        "Upstream project" => "https://github.com/bennyhallet/anubis"
+      }
     }
   end
 end
