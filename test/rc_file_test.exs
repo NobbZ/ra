@@ -26,19 +26,19 @@ defmodule RcFileTest do
     TestHelperTask.run(["initrc"])
 
     loaded = Ra.RcFile.load(TestHelperTask)
-    "A" =  loaded.a
-    false = loaded.b
-    1 = loaded.c
-    2.3 = loaded.d
+    assert "A"   == loaded.a
+    assert false == loaded.b
+    assert 1     == loaded.c
+    assert 2.3   == loaded.d
   end
 
   test "rc file is passed into function" do
     TestHelperTask.run(["initrc"])
     rc = TestHelperTask.run(["print"])
 
-    "A" =  rc.a
-    false = rc.b
-    1 = rc.c
-    2.3 = rc.d
+    assert "A"   == rc.a
+    assert false == rc.b
+    assert 1     == rc.c
+    assert 2.3   == rc.d
   end
 end
