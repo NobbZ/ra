@@ -1,11 +1,26 @@
 defmodule Ra do
 
+  @doc """
+  Defines the banner to use when showing the help.
+  """
   defmacro banner(banner) do
     quote do
       @banner unquote(banner)
     end
   end
 
+  @doc """
+  Defines and describes a subcommand.
+
+  You have do provide at least the `name` of the command as a string and the
+  function `f` that shall be called when this command is given.
+
+  Also you can provide an optional `description` which will be displayed when
+  showing the help.
+
+  The function `f` needs to accept a single argument, beeing a three-tuple:
+  `{arguments, options, config}`.
+  """
   defmacro command(name, description \\ "", f) do
     quote do
       @commands @commands ++ [{ unquote(to_string name), unquote(description) }]
@@ -16,6 +31,24 @@ defmodule Ra do
     end
   end
 
+  @doc """
+  Defines and describes an option.
+
+  You have to provide at least the `name` of the option, also you can define
+  its `type` (`:string` is assumed as a default) and also you can optionally
+  provide an `description`, the description is shown when the help is printed.
+
+  Remember, when you want to have a `description`, you also need to provide the
+  `type`.
+
+  `type` may be one of the following atoms:
+
+  * `:string` if the options value is supposed to be a string (default)
+  * `:integer` if the options value is supposed to be an integer
+  * `:float` if the options value is supposed to be a float
+  * `:boolean` if the option is meant to be an on/off-switch. One can use
+    `--opt`/`--no-opt` syntax for them.
+  """
   defmacro option(name, type \\ :string, description \\ "") do
     quote do
       @options Dict.put(@options, unquote(name), { unquote(type), unquote(description) })
@@ -36,6 +69,19 @@ defmodule Ra do
     end
   end
 
+  @doc """
+  Reassembles all the stuff configured beforehand.
+
+  This macro needs to be used last in the module.
+
+  It is also responsible for creating the `run` function needed by Elixir.
+
+  ## WARNING
+
+  This is only an interims solution and will be removed until version 0.4.0,
+  since there is currently no alternative implemented, there is also no
+  deprecation warning raised!
+  """
   defmacro parse do
     quote do
       @commands @commands ++ [{ "help", "View this help information." }]
