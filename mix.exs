@@ -18,7 +18,9 @@ defmodule Ra.Mixfile do
   end
 
   defp deps do
-    [{:power_assert, "~> 0.0.8", only: :test}]
+    [{:power_assert, "~> 0.0.8", only: :test},
+     {:ex_doc, "~> 0.11.4", only: :dev},
+     {:earmark, "~> 0.2.1", only: :dev}]
   end
 
   defp package do
