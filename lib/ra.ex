@@ -1,4 +1,5 @@
 defmodule Ra do
+  require Logger
 
   @doc """
   Defines the banner to use when showing the help.
@@ -70,19 +71,16 @@ defmodule Ra do
   end
 
   @doc """
-  Reassembles all the stuff configured beforehand.
+  **This macro is deprecated**: Reassembles all the stuff configured beforehand.
 
-  This macro needs to be used last in the module.
+  This macro needs to be used last in the module, as of version 0.3.3 its
+  functionality is applied automatically by using a before_compile hook. **As of
+  version 0.4.0 this macro will be removed!**
 
   It is also responsible for creating the `run` function needed by Elixir.
-
-  ## WARNING
-
-  This is only an interims solution and will be removed until version 0.4.0,
-  since there is currently no alternative implemented, there is also no
-  deprecation warning raised!
   """
   defmacro parse do
+    Logger.warn "Explicit usage of Ra.parse/0 is deprecated. The macro will be removed in 0.4.0."
     quote do
       @commands @commands ++ [{ "help", "View this help information." }]
 
