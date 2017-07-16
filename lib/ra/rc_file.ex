@@ -4,8 +4,8 @@ defmodule Ra.RcFile do
 
   def touch(dict, module) do
     dict
-    |> Dict.keys
-    |> Enum.map(&("#{to_string(&1)}: #{Dict.get(dict, &1)}"))
+    |> Map.keys
+    |> Enum.map(&("#{to_string(&1)}: #{Map.get(dict, &1)}"))
     |> Enum.join("\n")
     |> _write(module)
   end
@@ -28,7 +28,7 @@ defmodule Ra.RcFile do
   defp _parse([], dict), do: dict
   defp _parse([pair|tail], dict) do
     [key, value] = pair |> String.split(": ")
-    _parse(tail, Dict.put(dict, String.to_atom(key), parse_value(value)))
+    _parse(tail, Map.put(dict, String.to_atom(key), parse_value(value)))
   end
 
   defp parse_value("false"), do: false

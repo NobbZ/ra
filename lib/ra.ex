@@ -52,8 +52,8 @@ defmodule Ra do
   """
   defmacro option(name, type \\ :string, description \\ "") do
     quote do
-      @options Dict.put(@options, unquote(name), { unquote(type), unquote(description) })
-      @opt_dict Dict.put(@opt_dict, unquote(name), unquote(type))
+      @options Map.put(@options, unquote(name), { unquote(type), unquote(description) })
+      @opt_dict Map.put(@opt_dict, unquote(name), unquote(type))
     end
   end
 
@@ -66,7 +66,7 @@ defmodule Ra do
       def _init_rc(_, true), do: nil
       def _init_rc(d, _), do: Ra.RcFile.touch(d, __MODULE__)
 
-      def _command(["initrc"|_], _), do: init_rc
+      def _command(["initrc"|_], _), do: init_rc()
     end
   end
 
@@ -80,15 +80,16 @@ defmodule Ra do
   It is also responsible for creating the `run` function needed by Elixir.
   """
   defmacro parse do
-    Logger.warn "Explicit usage of Ra.parse/0 is deprecated. The macro will be removed in 0.4.0."
+    IO.warn("Explicit usage of Ra.parse/0 is deprecated. The macro will be removed in 0.4.0.", Macro.Env.stacktrace(__CALLER__))
+
     quote do
       @commands @commands ++ [{ "help", "View this help information." }]
 
-      def _command(["help"|_], _), do: help
+      def _command(["help"|_], _), do: help()
 
       def _command(_, _) do
         IO.puts "Command unknown."
-        help
+        help()
       end
 
       def help do
@@ -97,8 +98,8 @@ defmodule Ra do
         IO.puts "OPTIONS:\n"
 
         @options
-        |> Dict.keys
-        |> Enum.map(&("  --#{to_string &1} [#{Dict.get(@options, &1) |> elem(0) |> to_string}] - #{Dict.get(@options, &1) |> elem(1) |> to_string}"))
+        |> Map.keys
+        |> Enum.map(&("  --#{to_string &1} [#{Map.get(@options, &1) |> elem(0) |> to_string}] - #{Map.get(@options, &1) |> elem(1) |> to_string}"))
         |> Enum.join("\n")
         |> IO.puts
 
@@ -123,8 +124,8 @@ defmodule Ra do
 
       @banner   ""
       @commands []
-      @options  []
-      @opt_dict []
+      @options  %{}
+      @opt_dict %{}
     end
   end
 

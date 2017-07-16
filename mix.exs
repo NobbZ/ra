@@ -5,12 +5,12 @@ defmodule Ra.Mixfile do
     [app: :ra,
      version: "0.3.2",
      elixir: "~> 1.0",
-     package: package,
+     package: package(),
      docs: [readme: true, main: "README.md"],
      description: """
       Ra is a framework for building command line applications.
      """,
-     deps: deps]
+     deps: deps()]
   end
 
   def application do
@@ -18,7 +18,7 @@ defmodule Ra.Mixfile do
   end
 
   defp deps do
-    [{:power_assert, "~> 0.0.8", only: :test},
+    [{:power_assert, "~> 0.0", only: :test},
      {:ex_doc, "~> 0.11.4", only: :dev},
      {:earmark, "~> 0.2.1", only: :dev}]
   end
