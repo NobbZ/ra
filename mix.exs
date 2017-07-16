@@ -6,7 +6,7 @@ defmodule Ra.Mixfile do
      version: "0.3.3",
      elixir: "~> 1.0",
      package: package(),
-     docs: [readme: true, main: "README.md"],
+     docs: [],
      description: """
       Ra is a framework for building command line applications.
      """,
